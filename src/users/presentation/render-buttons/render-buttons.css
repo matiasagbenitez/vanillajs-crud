@@ -1,0 +1,17 @@
+button {
+    background-color: #7f8880ad;
+    border: none;
+    color: white;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 13px;
+    margin: 4px 20px;
+    padding: 8px 20px;
+}
+
+#current-page {
+    color: white;
+    font-weight: 700;
+    margin: 0px 20px;
+    font-size: 20px;
+}

@@ -1,6 +1,7 @@
 import './render-table.css';
 import usersStore from '../../store/users-store.js';
 import { showModal } from '../render-modal/render-modal';
+import { deleteUserById } from '../../usecases/delete-user-by-id';
 
 let table;
 
@@ -32,6 +33,22 @@ const tableSelectListener = (event) => {
     }
 }
 
+const tableDeleteListener = async (event) => {
+    const target = event.target;
+    if (target.classList.contains('delete-user')) {
+        const id = target.dataset.id;
+        try {
+            await deleteUserById(id);
+            await usersStore.reloadPage();
+            document.querySelector('#current-page').innerText = usersStore.getCurrentPage();
+            renderTable();
+        } catch (error) {
+            console.log(error);
+            alert('No se pudo eliminar el usuario!');
+        }
+    }
+}
+
 /**
  * 
  * @param {HTMLDivElement} element 
@@ -45,7 +62,7 @@ export const renderTable = (element) => {
         element.append(table);
         
         table.addEventListener('click', tableSelectListener);
-
+        table.addEventListener('click', tableDeleteListener);
     }
 
     let tableHTML = '';
@@ -58,7 +75,7 @@ export const renderTable = (element) => {
                 <td>${user.lastName}</td>
                 <td>${user.isActive}</td>
                 <td>
-                    <a href="#" class="select-user" data-id="${user.id}">Edit</a>
+                    <a href="#" class="select-user" data-id="${user.id}">Select</a>
                     |
                     <a href="#" class="delete-user" data-id="${user.id}">Delete</a>
                 </td>
